@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <title>💖 Un correo para ti 💖</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    h2 {
+      margin: 0 0 20px;
+      font-size: 1.35rem;
+    }
+
+    /* PANTALLAS */
+    .screen {
+      display: none;
+      width: 90%;
+      max-width: 600px;
+      animation: fadeIn 0.8s ease;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    /* IMÁGENES */
+    .main-img {
+      display: block;
+      width: 280px;
+      max-width: 85vw;
+      height: auto;
+      margin: 0 auto 15px;
+      cursor: pointer;
+      border: none;
+      box-shadow: none;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-user-drag: none;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform 0.25s ease;
+    }
+
+    .main-img:active {
+      transform: scale(0.94);
+    }
+
+    /* MODAL */
+    .letter-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+
+      display: none;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 12px;
+
+      background: rgba(0, 0, 0, 0.65);
+
+      opacity: 0;
+
+      transition: opacity 0.3s ease;
+    }
+
+    .letter-modal.show {
+      display: flex;
+      opacity: 1;
+    }
+
+    /* HOJA DE LA CARTA */
+    .letter-paper {
+      position: relative;
+
+      width: 96vw;
+      max-width: 850px;
+
+      max-height: 92vh;
+
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+
+      padding: 45px 25px 30px;
+
+      background:
+        repeating-linear-gradient(
+          white,
+          white 28px,
+          #e3e3e3 29px
+        );
+
+      border: 2px solid #e5e5e5;
+
+      box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.3);
+
+      text-align: left;
+
+      transform: translateY(35px) scale(0.94);
+
+      opacity: 0;
+
+      transition:
+        transform 0.4s ease,
+        opacity 0.4s ease;
+    }
+
+    .letter-modal.show .letter-paper {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+
+    /* TITULO CARTA */
+    .letter-paper h3 {
+      font-family: "Dancing Script", cursive;
+
+      font-size: 1.8rem;
+
+      line-height: 1.3;
+
+      color: #444;
+
+      margin:
+        0
+        40px
+        25px
+        0;
+    }
+
+    /* TEXTO CARTA */
+    .letter-paper p {
+      font-family: "Dancing Script", cursive;
+
+      font-size: 1.2rem;
+
+      line-height: 1.55;
+
+      color: #444;
+
+      margin: 0 0 20px;
+    }
+
+    /* BOTÓN CERRAR */
+    .close-letter {
+      position: absolute;
+
+      top: 10px;
+      right: 10px;
+
+      width: 38px;
+      height: 38px;
+
+      border: none;
+
+      border-radius: 50%;
+
+      background: #ff4f81;
+
+      color: white;
+
+      font-size: 25px;
+
+      line-height: 38px;
+
+      padding: 0;
+
+      cursor: pointer;
+
+      z-index: 10;
+
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .close-letter:active {
+      transform: scale(0.9);
+    }
+
+    /* ANIMACIÓN */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.97);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* CELULARES */
+    @media (max-width: 600px) {
+
+      .letter-modal {
+        padding: 8px;
+      }
+
+      .letter-paper {
+        width: 96vw;
+        max-height: 93vh;
+
+        padding:
+          43px
+          21px
+          28px;
+      }
+
+      .letter-paper h3 {
+        font-size: 1.65rem;
+      }
+
+      .letter-paper p {
+        font-size: 1.15rem;
+        line-height: 1.55;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================= -->
+  <!-- PANTALLA PRINCIPAL -->
+  <!-- ============================= -->
+
+  <div class="screen active" id="screen1">
+
+    <h2>Hola, te llegó un correo</h2>
+
+    <img
+      id="rabbitImage"
+      class="main-img"
+      src="https://i.pinimg.com/736x/ff/f5/09/fff50907173be3563c30d60e1baa6cbc.jpg"
+      alt="Conejito"
+    >
+
+  </div>
+
+
+  <!-- ============================= -->
+  <!-- MODAL DE LA CARTA -->
+  <!-- ============================= -->
+
+  <div
+    class="letter-modal"
+    id="letterModal"
+    role="dialog"
+    aria-modal="true"
+  >
+
+    <div class="letter-paper">
+
+      <button
+        class="close-letter"
+        id="closeLetter"
+        aria-label="Cerrar carta"
+      >
+        ×
+      </button>
+
+
+      <h3>
+        Feliz día de Amor y Amistad, mi chiquitina ❤️.
+      </h3>
+
+
+      <p>
+        Quería aprovechar este día para decirte que siento mucho no haber estado tan más presente este día como me hubiera gustado, por alguna razón debió haber sido, sin embargo eso no significa que no pueda mandarte esta carta este día tan especial.
+      </p>
+
+
+      <p>
+        En primer lugar quiero que sepas que eres una persona demasiado importante para mí. No solamente por ser mi novia, sino por todo lo que hemos vivido, por todos los momentos que hemos compartido y por la forma en que poco a poco te has convertido en una parte muy importante de mi vida.
+      </p>
+
+
+      <p>
+        Amo la amistad y el amor que me has brindado todo este tiempo por que aveces molestamos como amigos y nos amamos como pareja, amo poder ser yo mismo con tigo, contarte todas mis cosas sin importar que me juzgues eres como mi mejor amiga y amo que a la vez pueda decir que eres mi mujer.
+      </p>
+
+
+      <p>
+        Gracias por estar, por quererme, por acompañarme y por todos esos pequeños momentos que hemos compartido. Espero que podamos seguir construyendo muchos más recuerdos juntos y que, aunque no siempre haga todo perfecto, nunca dudes de que te amo muchísimo y que ocupas un lugar muy especial en mi corazón, siempre en mi corazón mi vida gracias por permitirme
+      </p>
+
+
+      <p>
+        Feliz día de Amor y Amistad, mi amor. 🧡
+        <br><br>
+        Te amo muchísimo, chiquitinaaaaaa
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- ============================= -->
+  <!-- JAVASCRIPT -->
+  <!-- ============================= -->
+
+  <script>
+
+    const rabbitImage =
+      document.getElementById("rabbitImage");
+
+    const letterModal =
+      document.getElementById("letterModal");
+
+    const closeLetter =
+      document.getElementById("closeLetter");
+
+
+    /* ABRIR CARTA */
+
+    function openLetter() {
+
+      letterModal.classList.add("show");
+
+      document.body.style.overflow = "hidden";
+
+    }
+
+
+    /* CERRAR CARTA */
+
+    function closeLetterModal() {
+
+      letterModal.classList.remove("show");
+
+      document.body.style.overflow = "";
+
+    }
+
+
+    /*
+      CLICK NORMAL
+      Funciona en computadores y navegadores móviles.
+    */
+
+    rabbitImage.addEventListener(
+      "click",
+      function () {
+
+        openLetter();
+
+      }
+    );
+
+
+    /*
+      TOUCH
+      Compatible con iPhone / Safari.
+    */
+
+    rabbitImage.addEventListener(
+      "touchend",
+      function (event) {
+
+        event.preventDefault();
+
+        openLetter();
+
+      },
+      {
+        passive: false
+      }
+    );
+
+
+    /* BOTÓN X */
+
+    closeLetter.addEventListener(
+      "click",
+      function () {
+
+        closeLetterModal();
+
+      }
+    );
+
+
+    /*
+      CERRAR TOCANDO FUERA
+      DE LA CARTA
+    */
+
+    letterModal.addEventListener(
+      "click",
+      function (event) {
+
+        if (event.target === letterModal) {
+
+          closeLetterModal();
+
+        }
+
+      }
+    );
+
+
+    /*
+      CERRAR CON ESC
+      (computador)
+    */
+
+    document.addEventListener(
+      "keydown",
+      function (event) {
+
+        if (event.key === "Escape") {
+
+          closeLetterModal();
+
+        }
+
+      }
+    );
+
+  </script>
+
+</body>
+</html>
